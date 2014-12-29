@@ -44,10 +44,20 @@ class Amazon_S3_And_CloudFront extends AWS_Plugin_Base {
 			return '1';
 		}
 
+		
+
 		// Default object prefix
 		if ( 'object-prefix' == $key && !isset( $settings['object-prefix'] ) ) {
 			$uploads = wp_upload_dir();
 			$parts = parse_url( $uploads['baseurl'] );
+			
+			if(defined('AS3CF_ADD_DOMAIN')){
+				$site  = get_site_url();
+		 		$site  = preg_replace('#^https?://#', '', $site);
+		 		$site  = str_replace('.', '-', $site);
+		 		return  $site . '/' . substr( $parts['path'], 1 ) . '/';
+			}
+			
 			return substr( $parts['path'], 1 ) . '/';
 		}
 
